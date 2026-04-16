@@ -1,0 +1,28 @@
+# Local dev profile — replaces the Postgres datasource with H2 in memory.
+# Run with: mvn spring-boot:run -Dspring-boot.run.profiles=dev
+# or:       java -jar user-service.jar --spring.profiles.active=dev
+#
+# H2 console is available at http://localhost:8081/h2-console
+# JDBC URL:  jdbc:h2:mem:user_db
+# User:      sa   /   Password: (empty)
+spring:
+  datasource:
+    url: jdbc:h2:mem:user_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+# Keep the Eureka registration attempt quiet if the discovery server
+# isn't running locally — it'll retry in the background and that's fine.
+eureka:
+  client:
+    enabled: false
